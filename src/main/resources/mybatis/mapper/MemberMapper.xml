@@ -61,7 +61,8 @@
             MEMBER_ID,
             MEMBER_NAME,
             MEMBER_PASSWORD,
-            MEMBER_EMAIL
+            MEMBER_EMAIL,
+            STATUS
         )
         VALUES
         (
@@ -69,7 +70,9 @@
             #{memberId},
             #{memberName},
             #{memberPassword},
-            #{memberEmail}
+            #{memberEmail},
+            '새싹'
+
         )
     </insert>
 

@@ -10,7 +10,7 @@ public interface MemberMapper {
 
     MemberDTO selectByEmail(String email);
 
-    int insertMember(MemberDTO member);
+    int insertMember(MemberDTO memberDTO);
 
     Optional<MemberDTO> findByMemberId(String memberId);
 

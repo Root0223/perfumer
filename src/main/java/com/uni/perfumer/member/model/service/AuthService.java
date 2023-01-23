@@ -32,9 +32,10 @@ public class AuthService {
             throw new DuplicatedUsernameException("이메일이 중복됩니다");
 
         }
+        log.info("[AuthService] Member Signup Start ==============================");
         memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
-        int result = memberMapper.insertMember(memberDTO)   ;
-
+        int result = memberMapper.insertMember(memberDTO);
+        log.info("[AuthService] Member Insert Result {}", result > 0 ? "회원 가입 성공" : "회원 가입 실패");
         log.info("[AuthService] Signup End ==============================");
 
         return memberDTO;
