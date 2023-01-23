@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,17 +29,19 @@ public class SecurityConfig {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-    @Bean
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(memberService).passwordEncoder(passwordEncoder)
-                .and()
-                .inMemoryAuthentication()
-                .withUser("user").password("{bcrypt}password").roles("USER")
-                .and()
-                .withUser("admin").password("{bcrypt}password").roles("USER", "ADMIN");
-
-    }
+//    @Bean
+//    protected AuthenticationManager authConfigure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .userDetailsService(memberService).passwordEncoder(passwordEncoder)
+//                .and()
+//                .inMemoryAuthentication()
+//                .withUser("user").password("{bcrypt}password").roles("USER")
+//                .and()
+//                .withUser("admin").password("{bcrypt}password").roles("USER", "ADMIN");
+//
+//                return auth.build();
+//
+//    }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()

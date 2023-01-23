@@ -1,8 +1,14 @@
 package com.uni.perfumer.jwt;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uni.perfumer.exception.dto.ApiExceptionDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,9 +38,36 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("[JwtFilter] doFilterInternal START ===================================");
+        try {
         String jwt = resolveToken(request);
         log.info("[JwtFilter] jwt : {}", jwt);
 
-//        if(StringUtils.hasText(jwt) && tokenProvider.validatToken)
+     if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
+         Authentication authentication = tokenProvider.getAuthentication(jwt);
+         SecurityContextHolder.getContext().setAuthentication(authentication);
+     }
+            filterChain.doFilter(request, response);
+    }catch(RuntimeException e){
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            ApiExceptionDTO errorResponse = new ApiExceptionDTO(HttpStatus.UNAUTHORIZED, e.getMessage());
+
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(convertObjectToJson(errorResponse));
+
+        }
+
     }
+    public String convertObjectToJson(Object object) throws JsonProcessingException {
+//        JsonProcessingException 은 IOException의 하위 클래스이다. 따라서 checked Exception 이고,
+//        컴파일타임에 예외를 검사하며, 반드시 예외처리를 해줘야하기에 try/ catch 로 묶은 모습이다.
+        //체크드예외는 예외처리를 트로우해서 처리
+        if (object == null) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
+    }
+
 }

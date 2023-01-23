@@ -5,19 +5,20 @@ import lombok.Data;
 @Data
 public class TokenDTO {
 
-        private String grantType;
-        private String memberName;
-        private String accessToken;
+    private String grantType;
+    private String memberName;
+    private String status;
+    private String accessToken;
 
-        private String status;
-        private Long accessTokenExpiresIn;
+
+    private Long accessTokenExpiresIn;
 
 
     public TokenDTO(String grantType, String memberName, String accessToken, String status, Long accessTokenExpiresIn) {
         this.grantType = grantType;
         this.memberName = memberName;
-        this.accessToken = accessToken;
         this.status = status;
+        this.accessToken = accessToken;
         this.accessTokenExpiresIn = accessTokenExpiresIn;
     }
 }
