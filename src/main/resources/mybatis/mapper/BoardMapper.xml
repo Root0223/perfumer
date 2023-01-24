@@ -27,6 +27,9 @@
         )
 
     </insert>
+
+
+
     <select id="boardList" resultType="BoardDTO">
         select * from TBL_BOARD
     </select>
