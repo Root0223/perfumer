@@ -8,9 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("/perfumeimgs/")
+    @Value("${image.add-resource-locations}")
     private String ADD_RESOURCE_LOCATION;
-    @Value("/perfumeimgs/**")
+    @Value("${image.add-resource-handler}")
     private String ADD_RESOURCE_HANDLER;
 
     @Override

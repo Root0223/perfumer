@@ -14,12 +14,14 @@
 	<typeAliases>
 		<!--<typeAlias alias="ProductDto" type="com.uni.reactpro.product.dto.ProductDto"/>-->
 		<typeAlias alias="MemberDTO" type="com.uni.perfumer.member.dto.MemberDTO"/>
+		<typeAlias alias="BoardDTO" type="com.uni.perfumer.board.dto.BoardDTO"/>
 		<!--<typeAlias alias="PurchaseDto" type="com.uni.reactpro.purchase.dto.PurchaseDto"/>
 		<typeAlias alias="ReviewDto" type="com.uni.reactpro.review.dto.ReviewDto"/>-->
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="MemberMapper.xml" />
+		<mapper resource="BoardMapper.xml" />
 
 		<!--<mapper resource="ProductMapper.xml" />-->
 	<!--	<mapper resource="PurchaseMapper.xml" />

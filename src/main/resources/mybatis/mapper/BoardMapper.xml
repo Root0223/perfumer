@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uni.perfumer.board.model.dao.BoardMapper">
+
+
+    <insert id="boardInsert" parameterType="BoardDTO">
+        INSERT INTO TBL_BOARD
+        (
+         BOARD_CODE,
+         BOARD_TITLE,
+         BOARD_CONTENTS,
+         BOARD_AUTHOR,
+         BOARD_REGDATE,
+         BOARD_READS
+        )
+        VALUES
+        (
+          SEQ_BOARD_CODE.NEXTVAL,
+          #{boardTitle},
+          #{boardContents},
+          #{boardAuthor},
+          #{boardRegdate},
+          #{boardReads}
+
+        )
+
+    </insert>
+    <select id="boardList" resultType="BoardDTO">
+        select * from TBL_BOARD
+    </select>
+
+    <delete id="boardDelete" parameterType="BoardDTO">
+        delete from TBL_BOARD where BOARD_CODE = #{boardNo}
+    </delete>
+
+</mapper>
