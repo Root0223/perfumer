@@ -8,9 +8,13 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
-    public void boardInsert(BoardDTO boardDTO);
+     void boardInsert(BoardDTO boardDTO);
+    void boardModify(BoardDTO boardDTO);
 
     List<BoardDTO> boardList(BoardDTO boardDTO);
+
+    List<BoardDTO> boardDetail(BoardDTO boardCode);
+
 
     void boardDelete(Integer boardNo);
 

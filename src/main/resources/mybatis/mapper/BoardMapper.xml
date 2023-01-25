@@ -28,14 +28,33 @@
 
     </insert>
 
+    <update id="boardModify" parameterType="BoardDTO">
+        UPDATE TBL_BOARD
+        SET
+            BOARD_TITLE = #{boardTitle},
+            BOARD_CONTENTS = #{boardContents},
+            BOARD_AUTHOR = #{boardAuthor}
+
+        WHERE BOARD_CODE = #{boardCode}
+
+
+    </update>
+
+
 
 
     <select id="boardList" resultType="BoardDTO">
         select * from TBL_BOARD
     </select>
 
+
+    <select id="boardDetail" resultType="BoardDTO">
+        select * from TBL_BOARD
+        where BOARD_CODE = #{boardCode}
+    </select>
+
     <delete id="boardDelete" parameterType="BoardDTO">
-        delete from TBL_BOARD where BOARD_CODE = #{boardNo}
+        delete from TBL_BOARD where BOARD_CODE = #{boardCode}
     </delete>
 
 </mapper>

@@ -21,19 +21,27 @@ public class BoardService {
         boardMapper.boardInsert(boardDTO);
     }
 
+    public void boardModify(BoardDTO boardDTO){
+        boardMapper.boardModify(boardDTO);
+    }
+
     public List<BoardDTO> boardList(BoardDTO boardDTO){
         List<BoardDTO> result = boardMapper.boardList(boardDTO);
         return  result;
     }
 
-    public List<BoardDTO> boardList(Integer boardNo){
+    public List<BoardDTO> boardDetail(Integer boardCode){
         BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setBoardNo(boardNo);
-        List<BoardDTO> result = boardMapper.boardList(boardDTO);
+        boardDTO.setBoardCode(boardCode);
+        List<BoardDTO> result = boardMapper.boardDetail(boardDTO);
         return result;
     }
 
-    public  void deleteBoard( Integer boardNo){
-        boardMapper.boardDelete(boardNo);
+    public  void deleteBoard(Integer boardCode){
+        boardMapper.boardDelete(boardCode);
     }
+
+
+
+
 }

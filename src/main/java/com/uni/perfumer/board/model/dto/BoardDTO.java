@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class BoardDTO {
 
-    private int boardNo;
+    private Integer boardCode;
     private String boardTitle;
     private String boardContents;
     private String boardAuthor;
