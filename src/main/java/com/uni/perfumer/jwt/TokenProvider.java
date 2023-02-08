@@ -6,7 +6,6 @@ import com.uni.perfumer.member.model.dto.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-
-
 
 import java.security.Key;
 import java.util.*;
@@ -52,6 +49,7 @@ public class TokenProvider {
         log.info("[TokenProvider] generateTokenDto Start ===================================");
         log.info("[TokenProvider] {}", memberDTO.getMemberRole());
 
+        //권한 가져오기
         List<String> roles = Collections.singletonList(memberDTO.getMemberRole());
 
         Claims claims = Jwts
@@ -89,7 +87,7 @@ public class TokenProvider {
         }
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))//페이로드안에 있는 권한(auth)를
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
         log.info("[TokenProvider] authorities : {}", authorities);
