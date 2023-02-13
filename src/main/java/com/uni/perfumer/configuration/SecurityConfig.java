@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/auth/**").permitAll()// 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
           .antMatchers("/api/v1/boards/**").permitAll()
+                .antMatchers("/api/v1/board/**").permitAll()
 //                .antMatchers("/api/v1/reviews/**").permitAll()// 리뷰도 누구나 접근가능
                 .antMatchers("/api/**").hasAnyRole("USER", "ADMIN")  // 나머지 API 는 전부 인증 필요
                 .and()

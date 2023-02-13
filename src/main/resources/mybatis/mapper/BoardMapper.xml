@@ -12,8 +12,8 @@
          BOARD_TITLE,
          BOARD_CONTENTS,
          BOARD_AUTHOR,
-         BOARD_REGDATE,
-         BOARD_READS
+         BOARD_REGDATE
+
         )
         VALUES
         (
@@ -21,24 +21,34 @@
           #{boardTitle},
           #{boardContents},
           #{boardAuthor},
-          #{boardRegdate},
-          #{boardReads}
+          SYSDATE
+
 
         )
 
     </insert>
 
+    <select id="selectBoardTotal" resultType="int">
+        SELECT
+            count(*)
+
+       FROM TBL_BOARD
+
+
+    </select>
+
     <update id="boardModify" parameterType="BoardDTO">
         UPDATE TBL_BOARD
         SET
             BOARD_TITLE = #{boardTitle},
-            BOARD_CONTENTS = #{boardContents},
-            BOARD_AUTHOR = #{boardAuthor}
+            BOARD_CONTENTS = #{boardContents}
+
 
         WHERE BOARD_CODE = #{boardCode}
 
 
     </update>
+
 
 
 

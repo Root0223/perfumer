@@ -5,13 +5,15 @@ import com.uni.perfumer.board.model.dao.BoardMapper;
 import com.uni.perfumer.board.model.dto.ApiResponse;
 import com.uni.perfumer.board.model.dto.BoardDTO;
 import com.uni.perfumer.board.model.service.BoardService;
+import com.uni.perfumer.common.ResponseDTO;
+import com.uni.perfumer.common.paging.Pagenation;
+import com.uni.perfumer.common.paging.ResponseDtoWithPaging;
+import com.uni.perfumer.common.paging.SelectCriteria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -29,33 +31,38 @@ public class BoardController {
 
     private  BoardMapper boardMapper;
 
-  @PostMapping("/boards")
-    public ResponseEntity<?> boardInsert(@RequestBody BoardDTO boardDTO){
-     ResponseEntity<ApiResponse> responseEntity;
-     try {
-         boardService.boardInsert(boardDTO);
-         responseEntity = new ResponseEntity<>(new ApiResponse(true, "저장성공"), HttpStatus.OK);
-
-     } catch (Exception e) {
-        responseEntity = new ResponseEntity<>(new ApiResponse(false,  e.getMessage()),HttpStatus.BAD_REQUEST);
-     }
-     return responseEntity;
-  }
-
-    @PutMapping("/boards")
-    public ResponseEntity<?> boardModify(@RequestBody BoardDTO boardDTO){
-        ResponseEntity<ApiResponse> responseEntity;
-        try {
-            boardService.boardModify(boardDTO);
+//  @PostMapping("/boards")
+//    public ResponseEntity<?> boardInsert(@RequestBody BoardDTO boardDTO){
+//     ResponseEntity<ApiResponse> responseEntity;
+////     try {
+//         boardService.boardInsert(boardDTO);
+//         responseEntity = new ResponseEntity<>(new ApiResponse(true, "저장성공"), HttpStatus.OK);
+//
+////     } catch (Exception e) {
+////        responseEntity = new ResponseEntity<>(new ApiResponse(false,  e.getMessage()),HttpStatus.BAD_REQUEST);
+////     }
+//     return responseEntity;
+//  }
 
 
+    @PostMapping(value = "/boards")
+    public ResponseEntity<ResponseDTO> boardInsert(@ModelAttribute BoardDTO boardDTO){
+        log.info("[BoardController] PostMapping BoardDTO : " + boardDTO);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시판 등록 성공", boardService.boardInsert(boardDTO)));
+    }
 
-            responseEntity = new ResponseEntity<>(new ApiResponse(true, "변경완료"), HttpStatus.OK);
+    @PutMapping(value = "/boards")
+    public ResponseEntity<ResponseDTO> boardModify(@ModelAttribute BoardDTO boardDTO){
 
-        } catch (Exception e) {
-            responseEntity = new ResponseEntity<>(new ApiResponse(false,  e.getMessage()),HttpStatus.BAD_REQUEST);
-        }
-        return responseEntity;
+
+
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "게시판 업데이트 성공",  boardService.boardModify(boardDTO)));
+
+//        } catch (Exception e) {
+//            responseEntity = new ResponseEntity<>(new ApiResponse(false,  e.getMessage()),HttpStatus.BAD_REQUEST);
+//        }
+
 
     }
 //  @PostMapping("/board")
@@ -64,8 +71,22 @@ public class BoardController {
 //  }
 
   @GetMapping("/boards")
-    public ResponseEntity<List<BoardDTO>> boardList(){
-      return new ResponseEntity<List<BoardDTO>>(boardService.boardList(new BoardDTO()), HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> boardList(@RequestParam(name="offset", defaultValue="1") String offset){
+
+      log.info("[ProductController] selectProductListWithPaging : " + offset);
+
+      int totalCount = boardService.selectBoardTotal();
+      int limit = 10;
+      int buttonAmount = 5;
+      SelectCriteria selectCriteria = Pagenation.getSelectCriteria(Integer.parseInt(offset), totalCount, limit, buttonAmount);
+
+      log.info("[ProductController] selectCriteria : " + selectCriteria);
+
+      ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+      responseDtoWithPaging.setPageInfo(selectCriteria);
+      responseDtoWithPaging.setData(boardService.boardList(selectCriteria));
+
+      return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
   }
 
 //    @GetMapping("/board/{boardCode}")
@@ -78,15 +99,15 @@ public class BoardController {
         ResponseEntity<ApiResponse> responseEntity;
 
         try {
-            boardService.boardDetail(boardCode);
+
             log.info(String.valueOf(boardCode));
-            responseEntity = new ResponseEntity<>(new ApiResponse(true,
-                    boardCode + "번째 글이 조회 되었습니다"), HttpStatus.OK);
+            return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, boardCode + "번째 글이 조회 되었습니다", boardService.boardDetail(boardCode)));
+
         } catch (Exception e){
-            responseEntity = new ResponseEntity<>(new ApiResponse(false, e.getMessage()),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()),HttpStatus.BAD_REQUEST);
 
         }
-        return responseEntity;
+
     }
 
     @DeleteMapping("/boards/{boardCode}")

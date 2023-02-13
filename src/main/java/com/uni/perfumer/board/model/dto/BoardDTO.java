@@ -1,5 +1,6 @@
 package com.uni.perfumer.board.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +13,8 @@ public class BoardDTO {
     private String boardContents;
     private String boardAuthor;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date boardRegdate;
-    private int boardReads;
+//    private int boardReads;
 
 }
